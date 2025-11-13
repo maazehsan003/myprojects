@@ -32,8 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-
-  // New post form submission
+  
+// New post form submission
   const form = document.querySelector('#new-post-form');
   if (form) {
     form.addEventListener('submit', async (e) => {
@@ -43,31 +43,41 @@ document.addEventListener('DOMContentLoaded', () => {
       
       const body = new FormData();
       body.append('content', content);
+      body.append('csrfmiddlewaretoken', csrftoken);
       
-      const res = await fetch('/api/posts/', {
-        method: 'POST',
-        headers: { 'X-CSRFToken': csrftoken },
-        body
-      });
-      
-      if (!res.ok) { 
-        alert('Failed to post'); 
-        return; 
-      }
-      
-      const post = await res.json();
-      prependPostToDOM(post);
-      document.querySelector('#new-post-content').value = '';
-      
-      // Reset character counter
-      if (charCount) {
-        charCount.textContent = '0/500';
-        charCount.style.color = '#8E7E6F';
-      }
-      
-      // Trigger AOS animation for new post
-      if (typeof AOS !== 'undefined') {
-        AOS.refresh();
+      try {
+        const res = await fetch('/network/api/posts/', {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': csrftoken
+          },
+          body
+        });
+        
+        if (!res.ok) {
+          const errorText = await res.text();
+          console.error('Error response:', res.status, errorText);
+          alert('Failed to post'); 
+          return; 
+        }
+        
+        const post = await res.json();
+        prependPostToDOM(post);
+        document.querySelector('#new-post-content').value = '';
+        
+        // Reset character counter
+        if (charCount) {
+          charCount.textContent = '0/500';
+          charCount.style.color = '#8E7E6F';
+        }
+        
+        // Trigger AOS animation for new post
+        if (typeof AOS !== 'undefined') {
+          AOS.refresh();
+        }
+      } catch (error) {
+        console.error('Fetch error:', error);
+        alert('Failed to post');
       }
     });
   }
@@ -77,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const card = btn.closest('[data-post-id]');
     const id = card.dataset.postId;
     
-    const res = await fetch(`/api/posts/${id}/like/`, {
+    const res = await fetch(`/network/api/posts/${id}/like/`, {
       method: 'POST',
       headers: { 'X-CSRFToken': csrftoken }
     });
@@ -115,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const newContent = ta.value.trim();
       if (!newContent) return;
       
-      const res = await fetch(`/api/posts/${card.dataset.postId}/`, {
+      const res = await fetch(`/network/api/posts/${card.dataset.postId}/`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -153,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
     followBtn.addEventListener("click", async () => {
       const username = followBtn.dataset.username;
 
-      const res = await fetch(`/api/follow/${username}/`, {
+      const res = await fetch(`/network/api/follow/${username}/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

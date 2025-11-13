@@ -15,6 +15,7 @@ body {
 .container {
     max-width: 1200px;
     animation: fadeIn 0.6s ease-in;
+    padding: 0 20px;
 }
 
 @keyframes fadeIn {
@@ -29,6 +30,7 @@ h2 {
     margin-bottom: 1.5rem;
     color: #e6e9f0;
     letter-spacing: -0.5px;
+    word-break: break-word;
 }
 
 /* Navigation Buttons */
@@ -42,6 +44,7 @@ h2 {
     border: 2px solid transparent;
     text-transform: capitalize;
     letter-spacing: 0.3px;
+    display: inline-block;
 }
 
 .btn-outline-primary {
@@ -152,6 +155,8 @@ hr {
     font-weight: 600;
     font-size: 1.05rem;
     margin-right: 12px;
+    display: block;
+    margin-bottom: 4px;
 }
 
 .email-item span {
@@ -203,6 +208,7 @@ hr {
     border-radius: 8px;
     font-size: 0.95rem;
     transition: all 0.3s ease;
+    width: 100%;
 }
 
 .form-control:focus {
@@ -243,6 +249,8 @@ textarea.form-control {
     margin-bottom: 1rem;
     line-height: 1.7;
     color: #c5cad5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 #emails-view p strong {
@@ -304,31 +312,6 @@ textarea.form-control {
     background: #26a89c;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .container {
-        padding: 0 15px;
-    }
-
-    .btn {
-        font-size: 0.85rem;
-        padding: 8px 16px;
-    }
-
-    #compose-view,
-    #emails-view > div {
-        padding: 1.5rem;
-    }
-
-    h2 {
-        font-size: 1.25rem;
-    }
-
-    #emails-view h3 {
-        font-size: 1.5rem;
-    }
-}
-
 /* Loading Animation */
 .loading {
     display: inline-block;
@@ -342,4 +325,250 @@ textarea.form-control {
 
 @keyframes spin {
     to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   MOBILE RESPONSIVE STYLES
+   ============================================ */
+
+/* Tablets and Small Desktops */
+@media (max-width: 992px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    #emails-view h3 {
+        font-size: 1.75rem;
+    }
+}
+
+/* Mobile Devices */
+@media (max-width: 768px) {
+    body {
+        padding: 10px 0;
+    }
+    
+    .container {
+        padding: 0 10px;
+    }
+
+    /* Header */
+    h2 {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+    /* Navigation Buttons - Stack vertically on mobile */
+    .btn {
+        font-size: 0.85rem;
+        padding: 10px 14px;
+        margin: 4px 3px;
+        border-radius: 6px;
+    }
+    
+    /* Make buttons smaller and wrap better */
+    .btn-outline-primary,
+    .btn-primary {
+        min-width: auto;
+    }
+
+    /* Email List */
+    #emails-view h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        letter-spacing: -0.5px;
+    }
+
+    .email-item {
+        padding: 14px 16px;
+        margin: 10px 0;
+        border-radius: 10px;
+    }
+    
+    .email-item:hover {
+        transform: translateX(4px);
+    }
+
+    .email-item strong {
+        font-size: 0.95rem;
+        margin-bottom: 6px;
+    }
+    
+    .email-item span {
+        font-size: 0.8rem;
+        display: block;
+        margin-top: 6px;
+    }
+
+    /* Compose View */
+    #compose-view {
+        padding: 1.5rem;
+        border-radius: 12px;
+    }
+
+    #compose-view h3 {
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-control {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+        border-radius: 6px;
+    }
+
+    textarea.form-control {
+        min-height: 200px;
+    }
+
+    /* Email Detail View */
+    #emails-view > div {
+        padding: 1.5rem;
+        border-radius: 12px;
+    }
+
+    #emails-view p {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 0.8rem;
+    }
+
+    #emails-view p strong {
+        display: block;
+        margin-bottom: 4px;
+        min-width: auto;
+    }
+
+    #emails-view hr {
+        margin: 1.5rem 0;
+    }
+    
+    /* Action Buttons in Email Detail */
+    #emails-view .btn {
+        display: block;
+        width: 100%;
+        margin: 8px 0;
+        text-align: center;
+    }
+
+    /* Empty State */
+    .empty-state {
+        padding: 3rem 1.5rem;
+    }
+
+    .empty-icon {
+        font-size: 3rem;
+    }
+
+    .empty-message {
+        font-size: 1.1rem;
+    }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 480px) {
+    body {
+        padding: 5px 0;
+    }
+    
+    .container {
+        padding: 0 8px;
+    }
+
+    h2 {
+        font-size: 1rem;
+        margin-bottom: 0.8rem;
+    }
+
+    /* Smaller buttons for very small screens */
+    .btn {
+        font-size: 0.8rem;
+        padding: 8px 12px;
+        margin: 3px 2px;
+    }
+
+    #emails-view h3 {
+        font-size: 1.3rem;
+    }
+
+    .email-item {
+        padding: 12px 14px;
+        margin: 8px 0;
+    }
+
+    .email-item strong {
+        font-size: 0.9rem;
+    }
+
+    .email-item span {
+        font-size: 0.75rem;
+    }
+
+    #compose-view,
+    #emails-view > div {
+        padding: 1.2rem;
+        border-radius: 10px;
+    }
+
+    #compose-view h3 {
+        font-size: 1.2rem;
+    }
+
+    .form-control {
+        padding: 10px;
+        font-size: 0.85rem;
+    }
+
+    textarea.form-control {
+        min-height: 180px;
+    }
+
+    #emails-view p {
+        font-size: 0.85rem;
+    }
+
+    .empty-state {
+        padding: 2rem 1rem;
+    }
+
+    .empty-icon {
+        font-size: 2.5rem;
+    }
+
+    .empty-message {
+        font-size: 1rem;
+    }
+    
+    /* Reduce hover effects on mobile for better performance */
+    .btn:hover,
+    .email-item:hover {
+        transform: none;
+    }
+    
+    /* Remove complex shadows on mobile */
+    .btn-primary:hover,
+    .btn-outline-primary:hover {
+        box-shadow: 0 4px 12px rgba(46, 196, 182, 0.2);
+    }
+}
+
+/* Landscape Mobile Orientation */
+@media (max-height: 600px) and (orientation: landscape) {
+    textarea.form-control {
+        min-height: 150px;
+    }
+    
+    .empty-state {
+        padding: 2rem 1.5rem;
+    }
+    
+    #compose-view,
+    #emails-view > div {
+        padding: 1rem;
+    }
 }
