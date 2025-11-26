@@ -3,7 +3,7 @@
 {% block body %}
 
 <div data-aos="fade-up">
-    <h2 class="page-title">⭐ Your Watchlist</h2>
+    <h2 class="page-title"> Your Watchlist</h2>
 </div>
 
 {% if listings %}
@@ -21,9 +21,8 @@
 </div>
 {% else %}
 <div class="empty-state" data-aos="fade-up">
-    <div class="empty-state-icon">⭐</div>
     <p class="empty-state-text">Your watchlist is empty. Start adding items you're interested in!</p>
-    <a href="{% url 'index' %}" class="btn btn-primary" style="margin-top: 1rem;">Browse Listings</a>
+    <a href="{% url 'index1' %}" class="btn btn-primary" style="margin-top: 1rem;">Browse Listings</a>
 </div>
 {% endif %}
 

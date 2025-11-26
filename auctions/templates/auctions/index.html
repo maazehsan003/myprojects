@@ -9,18 +9,24 @@
 <div class="listings-grid">
     {% for listing in listings %}
     <div class="listing-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:'0' }}00">
-        <img src="{{ listing.image_url }}" alt="{{ listing.title }}" class="listing-image" onerror="this.src='https://via.placeholder.com/300x250?text=No+Image'">
+        <img src="{{ listing.image_url }}" alt="{{ listing.title }}" class="listing-image" onerror="this.src='https://via.placeholder.com/300x220?text=No+Image'">
         <div class="listing-content">
             <a href="{% url 'listing' listing.id %}" class="listing-title">{{ listing.title }}</a>
             <div class="listing-price">${{ listing.highest_bid }}</div>
-            <div class="listing-owner">👤 {{ listing.owner }}</div>
+            <div class="listing-owner">{{ listing.owner }}</div>
         </div>
     </div>
     {% endfor %}
 </div>
 {% else %}
 <div class="empty-state" data-aos="fade-up">
-    <div class="empty-state-icon">📭</div>
+    <div class="empty-state-icon">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+    </div>
     <p class="empty-state-text">No active listings available at the moment.</p>
 </div>
 {% endif %}

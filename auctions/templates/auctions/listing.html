@@ -4,12 +4,12 @@
 <!-- Status Alerts -->
 {% if not listing.is_active %}
 <div class="alert alert-secondary alert-permanent" role="alert" data-aos="fade-down">
-    <strong>🔒 This auction is closed.</strong>
+    <strong>This auction is closed.</strong>
 </div>
 
 {% if is_winner %}
 <div class="alert alert-success alert-permanent" role="alert" data-aos="fade-down" data-aos-delay="100">
-    🎉 <strong>Congratulations!</strong> You won this auction.
+    <strong>Congratulations!</strong> You won this auction.
 </div>
 {% endif %}
 {% endif %}
@@ -31,12 +31,12 @@
     <div class="col-lg-6" data-aos="fade-left">
         <div class="detail-section">
             <h2>{{ listing.title }}</h2>
-            <p style="color: #6b7280; margin-top: 1rem;">{{ listing.description }}</p>
+            <p style="color: var(--gray-600); margin-top: 1rem; line-height: 1.7;">{{ listing.description }}</p>
 
-            <h5 style="margin-top: 2rem; margin-bottom: 1rem; color: #1f2937;">Details</h5>
+            <h5 style="margin-top: 2rem; margin-bottom: 1.5rem; color: var(--dark);">Details</h5>
             <ul class="info-list">
                 <li>
-                    <span class="info-label">Status:</span>
+                    <span class="info-label">Status</span>
                     <span class="info-value">
                         {% if listing.is_active %}
                         <span class="badge badge-success">Active</span>
@@ -46,31 +46,31 @@
                     </span>
                 </li>
                 <li>
-                    <span class="info-label">Category:</span>
+                    <span class="info-label">Category</span>
                     <span class="info-value">{{ listing.category }}</span>
                 </li>
                 <li>
-                    <span class="info-label">Starting Bid:</span>
+                    <span class="info-label">Starting Bid</span>
                     <span class="info-value">${{ listing.starting_bid }}</span>
                 </li>
                 <li>
-                    <span class="info-label">Current Bid:</span>
-                    <span class="info-value" style="font-weight: 700; color: #6366f1;" data-current-bid="{{ listing.highest_bid }}">${{ listing.highest_bid }}</span>
+                    <span class="info-label">Current Bid</span>
+                    <span class="info-value" style="font-weight: 700; color: var(--primary-color);" data-current-bid="{{ listing.highest_bid }}">${{ listing.highest_bid }}</span>
                 </li>
                 <li>
-                    <span class="info-label">Owner:</span>
-                    <span class="info-value">👤 {{ listing.owner }}</span>
+                    <span class="info-label">Seller</span>
+                    <span class="info-value">{{ listing.owner }}</span>
                 </li>
             </ul>
 
             {% if not is_owner and user.is_authenticated %}
-            <form method="post" action="{% url 'toggle_watchlist' listing.id %}" style="margin-top: 1.5rem;">
+            <form method="post" action="{% url 'toggle_watchlist' listing.id %}" style="margin-top: 2rem;">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-secondary" data-watchlist-toggle>
+                <button type="submit" class="btn btn-secondary" data-watchlist-toggle style="width: 100%;">
                     {% if user in listing.watchers.all %}
-                    ⭐ Remove from Watchlist
+                    Remove from Watchlist
                     {% else %}
-                    ☆ Add to Watchlist
+                    Add to Watchlist
                     {% endif %}
                 </button>
             </form>
@@ -90,7 +90,7 @@
                 <div style="flex: 1;">
                     <label for="bid">Bid Amount</label>
                     <input type="number" name="bid" id="bid" step="0.01" class="form-control" placeholder="Enter amount" required>
-                    <small style="color: #6b7280; display: block; margin-top: 0.5rem;">
+                    <small style="color: var(--gray-500); display: block; margin-top: 0.5rem;">
                         Minimum bid: ${{ listing.highest_bid}}
                     </small>
                 </div>
@@ -106,7 +106,7 @@
 <div class="detail-section" data-aos="fade-up">
     <form method="post">
         {% csrf_token %}
-        <button type="submit" name="close" class="btn btn-danger">🔒 Close Auction</button>
+        <button type="submit" name="close" class="btn btn-danger">Close Auction</button>
     </form>
 </div>
 {% endif %}
@@ -125,7 +125,7 @@
         {% endfor %}
     </div>
     {% else %}
-    <p style="color: #6b7280; margin: 1rem 0;">No comments yet. Be the first to comment!</p>
+    <p style="color: var(--gray-500); margin: 1rem 0;">No comments yet. Be the first to comment!</p>
     {% endif %}
 
     {% if user.is_authenticated %}
@@ -138,8 +138,8 @@
         <button type="submit" class="btn btn-primary">Post Comment</button>
     </form>
     {% else %}
-    <p style="color: #6b7280; margin-top: 2rem;">
-        <a href="{% url 'login' %}">Log in</a> to leave a comment.
+    <p style="color: var(--gray-500); margin-top: 2rem;">
+        <a href="{% url 'login' %}" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">Log in</a> to leave a comment.
     </p>
     {% endif %}
 </div>

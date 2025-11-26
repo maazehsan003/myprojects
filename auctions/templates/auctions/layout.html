@@ -34,30 +34,30 @@
                 <!-- Navigation -->
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'index1' %}">🏠 Active Listings</a>
+                        <a class="nav-link" href="{% url 'index1' %}">Active Listings</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'categories' %}">📦 Categories</a>
+                        <a class="nav-link" href="{% url 'categories' %}">Categories</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'closed' %}">🔒 Closed Auctions</a>
+                        <a class="nav-link" href="{% url 'closed' %}">Closed Auctions</a>
                     </li>
                     {% if user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'create' %}">➕ Create Listing</a>
+                            <a class="nav-link" href="{% url 'create' %}">Create Listing</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'watchlist' %}">⭐ Watchlist</a>
+                            <a class="nav-link" href="{% url 'watchlist' %}">Watchlist</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'logout1' %}">🚪 Log Out</a>
+                            <a class="nav-link" href="{% url 'logout1' %}">Log Out</a>
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'login1' %}">🔐 Log In</a>
+                            <a class="nav-link" href="{% url 'login1' %}">Log In</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'register1' %}">📝 Register</a>
+                            <a class="nav-link" href="{% url 'register1' %}">Register</a>
                         </li>
                     {% endif %}
                 </ul>
