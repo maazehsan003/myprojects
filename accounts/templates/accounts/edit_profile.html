@@ -1,124 +1,180 @@
 {% extends "accounts/layout1.html" %}
 {% block body %}
 
-<div class="container mt-5">
+<div class="container">
   <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card shadow">
-        <div class="card-header">
-          <h3 class="text-center mb-0">Edit Profile</h3>
+    <div class="col-lg-8">
+      <div class="card" style="border-radius: 20px; overflow: hidden;">
+        <!-- Header -->
+        <div style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%); padding: 40px; text-align: center; position: relative; overflow: hidden;">
+          <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 30% 70%, rgba(255,255,255,0.1) 0%, transparent 50%);"></div>
+          <div style="position: relative; z-index: 1;">
+            <div style="width: 70px; height: 70px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; backdrop-filter: blur(10px);">
+              <i class="fas fa-user-edit" style="font-size: 1.8rem; color: white;"></i>
+            </div>
+            <h3 style="color: white; margin-bottom: 8px;">Edit Your Profile</h3>
+            <p style="color: rgba(255,255,255,0.8); margin: 0;">Keep your information up to date</p>
+          </div>
         </div>
-        <div class="card-body">
+        
+        <div class="card-body" style="padding: 40px;">
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             
             {% if profile.role == 'freelancer' %}
               <!-- Freelancer Edit Fields -->
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label for="first_name" class="form-label">First Name</label>
-                    <input type="text" class="form-control" id="first_name" name="first_name" 
-                           value="{{ freelancer_profile.first_name }}" required>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label for="last_name" class="form-label">Last Name</label>
-                    <input type="text" class="form-control" id="last_name" name="last_name" 
-                           value="{{ freelancer_profile.last_name }}" required>
-                  </div>
-                </div>
-              </div>
               
-              <div class="mb-3">
-                <label for="title" class="form-label">Professional Title</label>
-                <input type="text" class="form-control" id="title" name="title" 
-                       value="{{ freelancer_profile.title }}" required>
-              </div>
-              
-              <div class="mb-3">
-                <label for="bio" class="form-label">Bio</label>
-                <textarea class="form-control" id="bio" name="bio" rows="4" required>{{ freelancer_profile.bio }}</textarea>
-              </div>
-              
-              <div class="mb-3">
-                <label for="skills" class="form-label">Skills (comma separated)</label>
-                <input type="text" class="form-control" id="skills" name="skills" 
-                       value="{{ freelancer_profile.skills }}" required>
-              </div>
-              
-              <div class="mb-3">
-                <label for="phone_number" class="form-label">Phone Number</label>
-                <input type="tel" class="form-control" id="phone_number" name="phone_number" 
-                       value="{{ freelancer_profile.phone_number }}">
-              </div>
-              
-              <div class="mb-3">
-                <label for="hourly_rate" class="form-label">Hourly Rate ($)</label>
-                <input type="number" class="form-control" id="hourly_rate" name="hourly_rate" 
-                       value="{{ freelancer_profile.hourly_rate }}" step="0.01" required>
-              </div>
-              
-              <div class="mb-3">
-                <label for="profile_picture" class="form-label">Profile Picture</label>
-                {% if freelancer_profile.profile_picture %}
-                  <div class="mb-2">
-                    <img src="{{ freelancer_profile.profile_picture.url }}" alt="Current Profile" 
-                         class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
+              <!-- Current Profile Picture -->
+              <div class="text-center mb-4">
+                {% if freelancer_profile.profile_picture and freelancer_profile.profile_picture.name %}
+                  <img src="{{ freelancer_profile.profile_picture.url }}" alt="Current Profile" 
+                       style="width: 120px; height: 120px; object-fit: cover; border-radius: 50%; border: 4px solid var(--accent-primary); box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);">
+                {% else %}
+                  <div style="width: 120px; height: 120px; background: linear-gradient(135deg, var(--bg-elevated), var(--bg-hover)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; border: 4px solid var(--border-color);">
+                    <i class="fas fa-user" style="font-size: 3rem; color: var(--text-muted);"></i>
                   </div>
                 {% endif %}
-                <input type="file" class="form-control" id="profile_picture" name="profile_picture" accept="image/*">
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 12px;">
+                  <i class="fas fa-star" style="color: #6366f1;"></i> Freelancer Account
+                </p>
+              </div>
+              
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label"><i class="fas fa-user me-2"></i>First Name</label>
+                  <input type="text" class="form-control form-control-lg" id="first_name" name="first_name" 
+                         value="{{ freelancer_profile.first_name }}" required>
+                </div>
+                <div class="col-md-6 mb-4">
+                  <label class="form-label"><i class="fas fa-user me-2"></i>Last Name</label>
+                  <input type="text" class="form-control form-control-lg" id="last_name" name="last_name" 
+                         value="{{ freelancer_profile.last_name }}" required>
+                </div>
+              </div>
+              
+              <div class="mb-4">
+                <label class="form-label"><i class="fas fa-briefcase me-2"></i>Professional Title</label>
+                <input type="text" class="form-control form-control-lg" id="title" name="title" 
+                       value="{{ freelancer_profile.title }}" required placeholder="e.g., Full Stack Developer">
+              </div>
+              
+              <div class="mb-4">
+                <label class="form-label"><i class="fas fa-align-left me-2"></i>Bio</label>
+                <textarea class="form-control" id="bio" name="bio" rows="4" required placeholder="Tell clients about yourself...">{{ freelancer_profile.bio }}</textarea>
+              </div>
+              
+              <div class="mb-4">
+                <label class="form-label"><i class="fas fa-tags me-2"></i>Skills (comma separated)</label>
+                <input type="text" class="form-control form-control-lg" id="skills" name="skills" 
+                       value="{{ freelancer_profile.skills }}" required placeholder="JavaScript, Python, React">
+                <small class="form-text">Tip: Add relevant skills to appear in more searches</small>
+              </div>
+              
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label"><i class="fas fa-phone me-2"></i>Phone Number</label>
+                  <input type="tel" class="form-control form-control-lg" id="phone_number" name="phone_number" 
+                         value="{{ freelancer_profile.phone_number }}" placeholder="+1 234 567 8900">
+                </div>
+                <div class="col-md-6 mb-4">
+                  <label class="form-label"><i class="fas fa-dollar-sign me-2"></i>Hourly Rate ($)</label>
+                  <div class="input-group input-group-lg">
+                    <span class="input-group-text" style="background: var(--bg-secondary); border-color: var(--border-color); color: var(--text-muted);">$</span>
+                    <input type="number" class="form-control" id="hourly_rate" name="hourly_rate" 
+                           value="{{ freelancer_profile.hourly_rate }}" step="0.01" required>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mb-4">
+                <label class="form-label"><i class="fas fa-camera me-2"></i>Update Profile Picture</label>
+                <input type="file" class="form-control form-control-lg" id="profile_picture" name="profile_picture" accept="image/*">
+                <small class="form-text">Leave empty to keep your current picture</small>
               </div>
               
             {% elif profile.role == 'client' %}
               <!-- Client Edit Fields -->
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label for="first_name" class="form-label">First Name</label>
-                    <input type="text" class="form-control" id="first_name" name="first_name" 
-                           value="{{ client_profile.first_name }}" required>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label for="last_name" class="form-label">Last Name</label>
-                    <input type="text" class="form-control" id="last_name" name="last_name" 
-                           value="{{ client_profile.last_name }}" required>
-                  </div>
-                </div>
-              </div>
               
-              <div class="mb-3">
-                <label for="company_name" class="form-label">Company Name</label>
-                <input type="text" class="form-control" id="company_name" name="company_name" 
-                       value="{{ client_profile.company_name }}">
-              </div>
-              
-              <div class="mb-3">
-                <label for="phone_number" class="form-label">Phone Number</label>
-                <input type="tel" class="form-control" id="phone_number" name="phone_number" 
-                       value="{{ client_profile.phone_number }}">
-              </div>
-              
-              <div class="mb-3">
-                <label for="profile_picture" class="form-label">Profile Picture</label>
-                {% if client_profile.profile_picture %}
-                  <div class="mb-2">
-                    <img src="{{ client_profile.profile_picture.url }}" alt="Current Profile" 
-                         class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
+              <!-- Current Profile Picture -->
+              <div class="text-center mb-4">
+                {% if client_profile.profile_picture and client_profile.profile_picture.name %}
+                  <img src="{{ client_profile.profile_picture.url }}" alt="Current Profile" 
+                       style="width: 120px; height: 120px; object-fit: cover; border-radius: 50%; border: 4px solid #10b981; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);">
+                {% else %}
+                  <div style="width: 120px; height: 120px; background: linear-gradient(135deg, var(--bg-elevated), var(--bg-hover)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; border: 4px solid var(--border-color);">
+                    <i class="fas fa-building" style="font-size: 3rem; color: var(--text-muted);"></i>
                   </div>
                 {% endif %}
-                <input type="file" class="form-control" id="profile_picture" name="profile_picture" accept="image/*">
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 12px;">
+                  <i class="fas fa-check-circle" style="color: #10b981;"></i> Client Account
+                </p>
+              </div>
+              
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label"><i class="fas fa-user me-2"></i>First Name</label>
+                  <input type="text" class="form-control form-control-lg" id="first_name" name="first_name" 
+                         value="{{ client_profile.first_name }}" required>
+                </div>
+                <div class="col-md-6 mb-4">
+                  <label class="form-label"><i class="fas fa-user me-2"></i>Last Name</label>
+                  <input type="text" class="form-control form-control-lg" id="last_name" name="last_name" 
+                         value="{{ client_profile.last_name }}" required>
+                </div>
+              </div>
+              
+              <div class="mb-4">
+                <label class="form-label"><i class="fas fa-building me-2"></i>Company Name</label>
+                <input type="text" class="form-control form-control-lg" id="company_name" name="company_name" 
+                       value="{{ client_profile.company_name }}" placeholder="Your Company Name (Optional)">
+              </div>
+              
+              <div class="mb-4">
+                <label class="form-label"><i class="fas fa-phone me-2"></i>Phone Number</label>
+                <input type="tel" class="form-control form-control-lg" id="phone_number" name="phone_number" 
+                       value="{{ client_profile.phone_number }}" placeholder="+1 234 567 8900">
+              </div>
+              
+              <div class="mb-4">
+                <label class="form-label"><i class="fas fa-camera me-2"></i>Update Profile Picture</label>
+                <input type="file" class="form-control form-control-lg" id="profile_picture" name="profile_picture" accept="image/*">
+                <small class="form-text">Leave empty to keep your current picture</small>
               </div>
             {% endif %}
             
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-              <a href="{% url 'dashboard' %}" class="btn btn-secondary me-md-2">Cancel</a>
-              <button type="submit" class="btn btn-primary">Save Changes</button>
+            <!-- Action Buttons -->
+            <div style="border-top: 1px solid var(--border-color); padding-top: 30px; margin-top: 20px;">
+              <div class="d-flex flex-column flex-md-row gap-3 justify-content-between">
+                <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary btn-lg" style="padding: 14px 30px;">
+                  <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+                </a>
+                <button type="submit" class="btn btn-success btn-lg" style="padding: 14px 40px;">
+                  <i class="fas fa-save me-2"></i> Save Changes
+                </button>
+              </div>
             </div>
           </form>
+        </div>
+      </div>
+      
+      <!-- Additional Info Card -->
+      <div class="card mt-4" style="border-radius: 16px;">
+        <div class="card-body" style="padding: 24px;">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <h6 style="color: var(--text-primary); margin-bottom: 8px;">
+                <i class="fas fa-shield-alt me-2" style="color: #6366f1;"></i> Account Security
+              </h6>
+              <p style="color: var(--text-muted); margin: 0; font-size: 0.9rem;">
+                Need to change your email or password? Contact support for account security changes.
+              </p>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+              <a href="#" class="btn btn-outline-primary btn-sm">
+                <i class="fas fa-envelope"></i> Contact Support
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>

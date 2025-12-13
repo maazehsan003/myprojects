@@ -1,15 +1,17 @@
 {% extends "auctions/layout.html" %}
 
+{% block title %}{{ listing.title }} - AuctionHub{% endblock %}
+
 {% block body %}
 <!-- Status Alerts -->
 {% if not listing.is_active %}
-<div class="alert alert-secondary alert-permanent" role="alert" data-aos="fade-down">
-    <strong>This auction is closed.</strong>
+<div class="alert alert-secondary" role="alert" data-aos="fade-down">
+    <strong>This auction has ended.</strong> The bidding is now closed.
 </div>
 
 {% if is_winner %}
-<div class="alert alert-success alert-permanent" role="alert" data-aos="fade-down" data-aos-delay="100">
-    <strong>Congratulations!</strong> You won this auction.
+<div class="alert alert-success" role="alert" data-aos="fade-down" data-aos-delay="100">
+    <strong>🎉 Congratulations!</strong> You won this auction with a bid of ${{ listing.highest_bid }}.
 </div>
 {% endif %}
 {% endif %}
@@ -20,56 +22,71 @@
 </div>
 {% endif %}
 
-<!-- Listing Detail -->
-<div class="row">
+<!-- Product Detail Layout -->
+<div class="row g-4">
+    <!-- Product Image -->
     <div class="col-lg-6" data-aos="fade-right">
-        <div class="detail-section">
-            <img src="{{ listing.image_url }}" alt="{{ listing.title }}" class="listing-detail-image" onerror="this.src='https://via.placeholder.com/500x500?text=No+Image'">
+        <div class="detail-section" style="padding: 1rem;">
+            <img src="{{ listing.image_url }}" alt="{{ listing.title }}" class="listing-detail-image" onerror="this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=500&fit=crop'">
         </div>
     </div>
 
+    <!-- Product Info -->
     <div class="col-lg-6" data-aos="fade-left">
         <div class="detail-section">
+            <!-- Status Badge -->
+            <div style="margin-bottom: 1rem;">
+                {% if listing.is_active %}
+                <span class="badge badge-success">🟢 Live Auction</span>
+                {% else %}
+                <span class="badge badge-secondary">🔒 Auction Ended</span>
+                {% endif %}
+            </div>
+            
             <h2>{{ listing.title }}</h2>
-            <p style="color: var(--gray-600); margin-top: 1rem; line-height: 1.7;">{{ listing.description }}</p>
+            <p style="color: var(--gray-600); margin-top: 1rem; line-height: 1.8;">{{ listing.description }}</p>
 
-            <h5 style="margin-top: 2rem; margin-bottom: 1.5rem; color: var(--dark);">Details</h5>
+            <!-- Price Display -->
+            <div style="background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%); border-radius: var(--radius-lg); padding: 1.5rem; margin: 1.5rem 0;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="font-size: 0.75rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.05em;">Current Bid</div>
+                        <div style="font-size: 2.5rem; font-weight: 800; color: var(--secondary);" data-current-bid="{{ listing.highest_bid }}">${{ listing.highest_bid }}</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 0.75rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.05em;">Starting Bid</div>
+                        <div style="font-size: 1.25rem; color: var(--gray-600);">${{ listing.starting_bid }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Details List -->
             <ul class="info-list">
                 <li>
-                    <span class="info-label">Status</span>
+                    <span class="info-label">Category</span>
                     <span class="info-value">
-                        {% if listing.is_active %}
-                        <span class="badge badge-success">Active</span>
-                        {% else %}
-                        <span class="badge badge-secondary">Closed</span>
-                        {% endif %}
+                        <a href="{% url 'category' listing.category %}" style="color: var(--primary); text-decoration: none;">{{ listing.category }}</a>
                     </span>
                 </li>
                 <li>
-                    <span class="info-label">Category</span>
-                    <span class="info-value">{{ listing.category }}</span>
-                </li>
-                <li>
-                    <span class="info-label">Starting Bid</span>
-                    <span class="info-value">${{ listing.starting_bid }}</span>
-                </li>
-                <li>
-                    <span class="info-label">Current Bid</span>
-                    <span class="info-value" style="font-weight: 700; color: var(--primary-color);" data-current-bid="{{ listing.highest_bid }}">${{ listing.highest_bid }}</span>
-                </li>
-                <li>
                     <span class="info-label">Seller</span>
-                    <span class="info-value">{{ listing.owner }}</span>
+                    <span class="info-value" style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="width: 28px; height: 28px; background: var(--primary-gradient); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: white; font-size: 0.75rem; font-weight: 600;">{{ listing.owner.username|first|upper }}</span>
+                        {{ listing.owner }}
+                    </span>
                 </li>
             </ul>
 
+            <!-- Watchlist Button -->
             {% if not is_owner and user.is_authenticated %}
-            <form method="post" action="{% url 'toggle_watchlist' listing.id %}" style="margin-top: 2rem;">
+            <form method="post" action="{% url 'toggle_watchlist' listing.id %}" style="margin-top: 1.5rem;">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-secondary" data-watchlist-toggle style="width: 100%;">
+                <button type="submit" class="btn {% if user in listing.watchers.all %}btn-danger{% else %}btn-outline{% endif %}" style="width: 100%;">
                     {% if user in listing.watchers.all %}
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                     Remove from Watchlist
                     {% else %}
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                     Add to Watchlist
                     {% endif %}
                 </button>
@@ -81,67 +98,80 @@
 
 <!-- Bidding Section -->
 {% if listing.is_active and not is_owner and user.is_authenticated %}
-<div class="detail-section" data-aos="fade-up">
-    <h4>Place Your Bid</h4>
-    <form method="post" class="formBid">
+<div class="bid-section" data-aos="fade-up" style="margin-top: 1.5rem;">
+    <h4>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem;"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Place Your Bid
+    </h4>
+    <form method="post" style="display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
         {% csrf_token %}
-        <div class="form-group">
-            <div style="display: flex; gap: 1rem; align-items: flex-end;">
-                <div style="flex: 1;">
-                    <label for="bid">Bid Amount</label>
-                    <input type="number" name="bid" id="bid" step="0.01" class="form-control" placeholder="Enter amount" required>
-                    <small style="color: var(--gray-500); display: block; margin-top: 0.5rem;">
-                        Minimum bid: ${{ listing.highest_bid}}
-                    </small>
-                </div>
-                <button type="submit" name="bid_button" class="btn btn-primary">Place Bid</button>
-            </div>
+        <div style="flex: 1; min-width: 200px;">
+            <label for="bid" style="display: block; margin-bottom: 0.5rem; font-size: 0.875rem; opacity: 0.9;">Enter Your Bid Amount</label>
+            <input type="number" name="bid" id="bid" step="0.01" min="{{ listing.highest_bid }}" class="form-control" placeholder="Min: ${{ listing.highest_bid }}" required style="background: rgba(255,255,255,0.95); color: var(--gray-900);">
         </div>
+        <button type="submit" name="bid_button" class="btn btn-primary btn-lg">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Place Bid
+        </button>
     </form>
 </div>
 {% endif %}
 
 <!-- Close Auction (Owner Only) -->
 {% if is_owner and listing.is_active %}
-<div class="detail-section" data-aos="fade-up">
+<div class="detail-section" data-aos="fade-up" style="margin-top: 1.5rem; border: 2px dashed var(--danger-light);">
+    <h4 style="color: var(--danger);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Close This Auction
+    </h4>
+    <p style="color: var(--gray-600); margin-bottom: 1rem;">Once closed, no more bids can be placed. The highest bidder will win.</p>
     <form method="post">
         {% csrf_token %}
-        <button type="submit" name="close" class="btn btn-danger">Close Auction</button>
+        <button type="submit" name="close" class="btn btn-danger">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Close Auction
+        </button>
     </form>
 </div>
 {% endif %}
 
 <!-- Comments Section -->
-<div class="comments-section" data-aos="fade-up">
-    <h3>Comments</h3>
+<div class="comments-section" data-aos="fade-up" style="margin-top: 1.5rem;">
+    <h3>Discussion</h3>
     
     {% if comments %}
-    <div style="margin: 1.5rem 0;">
+    <div style="margin-bottom: 2rem;">
         {% for comment in comments %}
-        <div class="comment-item" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:'0' }}0">
+        <div class="comment-item" data-aos="fade-up" data-aos-delay="{{ forloop.counter0 }}0">
             <div class="comment-author">{{ comment.author }}</div>
             <div class="comment-content">{{ comment.content }}</div>
         </div>
         {% endfor %}
     </div>
     {% else %}
-    <p style="color: var(--gray-500); margin: 1rem 0;">No comments yet. Be the first to comment!</p>
+    <p style="color: var(--gray-500); margin: 1.5rem 0; text-align: center;">No comments yet. Start the conversation!</p>
     {% endif %}
 
     {% if user.is_authenticated %}
-    <h4 style="margin-top: 2rem;">Add a Comment</h4>
-    <form method="post" class="formComment">
-        {% csrf_token %}
-        <div class="form-group">
-            <textarea name="comment" class="form-control" rows="3" placeholder="Share your thoughts..." required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Post Comment</button>
-    </form>
+    <div style="background: var(--gray-50); border-radius: var(--radius-md); padding: 1.5rem; margin-top: 1.5rem;">
+        <h4 style="font-size: 1rem; margin-bottom: 1rem;">Leave a Comment</h4>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <textarea name="comment" class="form-control" rows="3" placeholder="Share your thoughts about this item..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                Post Comment
+            </button>
+        </form>
+    </div>
     {% else %}
-    <p style="color: var(--gray-500); margin-top: 2rem;">
-        <a href="{% url 'login' %}" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">Log in</a> to leave a comment.
-    </p>
+    <div style="background: var(--gray-50); border-radius: var(--radius-md); padding: 1.5rem; text-align: center; margin-top: 1.5rem;">
+        <p style="color: var(--gray-600); margin: 0;">
+            <a href="{% url 'login1' %}" style="color: var(--primary); font-weight: 600;">Log in</a> to join the discussion.
+        </p>
+    </div>
     {% endif %}
 </div>
-
 {% endblock %}

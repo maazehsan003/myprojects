@@ -1,29 +1,60 @@
 {% extends "auctions/layout.html" %}
 
-{% block body %}
+{% block title %}Your Watchlist - AuctionHub{% endblock %}
 
-<div data-aos="fade-up">
-    <h2 class="page-title"> Your Watchlist</h2>
+{% block body %}
+<div class="page-header" data-aos="fade-up">
+    <div>
+        <h2 class="page-title">Your Watchlist</h2>
+        <p class="page-subtitle">Items you're keeping an eye on</p>
+    </div>
+    <a href="{% url 'index1' %}" class="btn btn-outline">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Browse More
+    </a>
 </div>
 
 {% if listings %}
 <div class="listings-grid">
     {% for listing in listings %}
-    <div class="listing-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:'0' }}00">
-        <img src="{{ listing.image_url }}" alt="{{ listing.title }}" class="listing-image" onerror="this.src='https://via.placeholder.com/300x250?text=No+Image'">
+    <div class="listing-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:0 }}0">
+        <!-- Image Container -->
+        <div class="listing-image-container">
+            <img src="{{ listing.image_url }}" alt="{{ listing.title }}" class="listing-image" onerror="this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop'">
+            {% if listing.is_active %}
+            <span class="listing-badge">Live</span>
+            {% else %}
+            <span class="listing-badge" style="background: var(--gray-500);">Ended</span>
+            {% endif %}
+        </div>
+        
+        <!-- Content -->
         <div class="listing-content">
             <a href="{% url 'listing' listing.id %}" class="listing-title">{{ listing.title }}</a>
-            <div class="listing-price">${{ listing.highest_bid }}</div>
-            <div class="listing-owner">👤 {{ listing.owner }}</div>
+            
+            <div class="listing-price-section">
+                <div class="listing-price-label">Current Bid</div>
+                <div class="listing-price">${{ listing.highest_bid }}</div>
+            </div>
+            
+            <div class="listing-owner">{{ listing.owner }}</div>
         </div>
     </div>
     {% endfor %}
 </div>
 {% else %}
 <div class="empty-state" data-aos="fade-up">
-    <p class="empty-state-text">Your watchlist is empty. Start adding items you're interested in!</p>
-    <a href="{% url 'index1' %}" class="btn btn-primary" style="margin-top: 1rem;">Browse Listings</a>
+    <div class="empty-state-icon">
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+    </div>
+    <h3 style="color: var(--gray-800); margin-bottom: 0.5rem;">Your Watchlist is Empty</h3>
+    <p class="empty-state-text">Start adding items you're interested in to keep track of them here.</p>
+    <a href="{% url 'index1' %}" class="btn btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Browse Listings
+    </a>
 </div>
 {% endif %}
-
 {% endblock %}

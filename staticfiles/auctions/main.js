@@ -2,12 +2,16 @@
 document.addEventListener('DOMContentLoaded', function() {
     if (typeof AOS !== 'undefined') {
         AOS.init({
-            duration: 800,
-            easing: 'ease-in-out',
+            duration: 600,
+            easing: 'ease-out-cubic',
             once: true,
-            offset: 100
+            offset: 50,
+            delay: 0
         });
     }
+    
+    // Add page loaded class for animations
+    document.body.classList.add('page-loaded');
 
     // Form validation enhancement
     enhanceFormValidation();

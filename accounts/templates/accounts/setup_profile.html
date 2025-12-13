@@ -1,70 +1,115 @@
 {% extends "accounts/layout1.html" %}
 {% block body %}
 
-<div class="container mt-5">
+<div class="container">
   <div class="row justify-content-center">
-    <div class="col-md-8">
+    <div class="col-lg-10">
       
       <!-- Role Selection Section (shown only if role is not set) -->
       {% if not role %}
-      <div class="card shadow mb-4" id="roleSelectionCard">
-        <div class="card-header">
-          <h3 class="text-center mb-0">Choose Your Role</h3>
-          <p class="text-center text-muted mb-0 mt-2">How do you want to use Work Hub?</p>
+      <div id="roleSelectionCard">
+        <!-- Header -->
+        <div style="text-align: center; margin-bottom: 40px;">
+          <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; box-shadow: 0 10px 40px rgba(99, 102, 241, 0.3);">
+            <i class="fas fa-user-check" style="font-size: 2rem; color: white;"></i>
+          </div>
+          <h2 style="color: var(--text-primary); margin-bottom: 8px;">Choose Your Role</h2>
+          <p style="color: var(--text-muted); font-size: 1.1rem;">How do you want to use Work Hub?</p>
         </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <div class="card h-100 role-card" onclick="selectRole('freelancer', this)">
-                <div class="card-body text-center">
-                  <div class="mb-3">
-                    <i class="fas fa-user-tie fa-3x text-primary"></i>
-                  </div>
-                  <h5 class="card-title">Freelancer</h5>
-                  <p class="card-text">I want to offer my services</p>
-                  <ul class="list-unstyled text-start small">
-                    <li>• Create a professional profile</li>
-                    <li>• Showcase your skills</li>
-                    <li>• Find clients and projects</li>
-                    <li>• Set your hourly rates</li>
-                  </ul>
+
+        <!-- Role Cards -->
+        <div class="row justify-content-center">
+          <div class="col-md-5 mb-4">
+            <div class="card role-card h-100" onclick="selectRole('freelancer', this)" style="cursor: pointer; transition: all 0.3s ease; border: 2px solid transparent;">
+              <div class="card-body text-center" style="padding: 40px 30px;">
+                <div style="width: 100px; height: 100px; background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; border: 2px solid rgba(99, 102, 241, 0.3);">
+                  <i class="fas fa-user-tie" style="font-size: 2.5rem; color: #6366f1;"></i>
                 </div>
-              </div>
-            </div>
-            
-            <div class="col-md-6 mb-3">
-              <div class="card h-100 role-card" onclick="selectRole('client', this)">
-                <div class="card-body text-center">
-                  <div class="mb-3">
-                    <i class="fas fa-building fa-3x text-success"></i>
-                  </div>
-                  <h5 class="card-title">Client</h5>
-                  <p class="card-text">I want to hire freelancers</p>
-                  <ul class="list-unstyled text-start small">
-                    <li>• Post job opportunities</li>
-                    <li>• Find skilled freelancers</li>
-                    <li>• Manage your projects</li>
-                    <li>• Build your team</li>
-                  </ul>
+                <h4 style="color: var(--text-primary); margin-bottom: 8px;">Freelancer</h4>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">I want to offer my services</p>
+                
+                <ul style="list-style: none; padding: 0; margin: 0; text-align: left;">
+                  <li style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--border-color);">
+                    <i class="fas fa-check-circle" style="color: #10b981;"></i>
+                    <span style="color: var(--text-secondary);">Create a professional profile</span>
+                  </li>
+                  <li style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--border-color);">
+                    <i class="fas fa-check-circle" style="color: #10b981;"></i>
+                    <span style="color: var(--text-secondary);">Showcase your skills & portfolio</span>
+                  </li>
+                  <li style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--border-color);">
+                    <i class="fas fa-check-circle" style="color: #10b981;"></i>
+                    <span style="color: var(--text-secondary);">Find clients and projects</span>
+                  </li>
+                  <li style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--border-color);">
+                    <i class="fas fa-check-circle" style="color: #10b981;"></i>
+                    <span style="color: var(--text-secondary);">Set your hourly rates</span>
+                  </li>
+                </ul>
+                
+                <div class="select-indicator" style="margin-top: 24px; padding: 12px; background: rgba(99, 102, 241, 0.1); border-radius: 10px; opacity: 0; transition: opacity 0.3s ease;">
+                  <i class="fas fa-check" style="color: #6366f1;"></i>
+                  <span style="color: #6366f1; margin-left: 8px; font-weight: 600;">Selected</span>
                 </div>
               </div>
             </div>
           </div>
           
-          <div class="text-center mt-3">
-            <button type="button" class="btn btn-primary btn-lg" id="continueRoleBtn" disabled onclick="submitRoleSelection()">
-              <i class="fas fa-arrow-right"></i> Continue
-            </button>
+          <div class="col-md-5 mb-4">
+            <div class="card role-card h-100" onclick="selectRole('client', this)" style="cursor: pointer; transition: all 0.3s ease; border: 2px solid transparent;">
+              <div class="card-body text-center" style="padding: 40px 30px;">
+                <div style="width: 100px; height: 100px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; border: 2px solid rgba(16, 185, 129, 0.3);">
+                  <i class="fas fa-building" style="font-size: 2.5rem; color: #10b981;"></i>
+                </div>
+                <h4 style="color: var(--text-primary); margin-bottom: 8px;">Client</h4>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">I want to hire freelancers</p>
+                
+                <ul style="list-style: none; padding: 0; margin: 0; text-align: left;">
+                  <li style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--border-color);">
+                    <i class="fas fa-check-circle" style="color: #10b981;"></i>
+                    <span style="color: var(--text-secondary);">Post job opportunities</span>
+                  </li>
+                  <li style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--border-color);">
+                    <i class="fas fa-check-circle" style="color: #10b981;"></i>
+                    <span style="color: var(--text-secondary);">Find skilled freelancers</span>
+                  </li>
+                  <li style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--border-color);">
+                    <i class="fas fa-check-circle" style="color: #10b981;"></i>
+                    <span style="color: var(--text-secondary);">Manage your projects</span>
+                  </li>
+                  <li style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--border-color);">
+                    <i class="fas fa-check-circle" style="color: #10b981;"></i>
+                    <span style="color: var(--text-secondary);">Build your remote team</span>
+                  </li>
+                </ul>
+                
+                <div class="select-indicator" style="margin-top: 24px; padding: 12px; background: rgba(16, 185, 129, 0.1); border-radius: 10px; opacity: 0; transition: opacity 0.3s ease;">
+                  <i class="fas fa-check" style="color: #10b981;"></i>
+                  <span style="color: #10b981; margin-left: 8px; font-weight: 600;">Selected</span>
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
+        
+        <div class="text-center mt-4">
+          <button type="button" class="btn btn-primary btn-lg px-5" id="continueRoleBtn" disabled onclick="submitRoleSelection()" style="padding: 14px 40px;">
+            <i class="fas fa-arrow-right"></i> Continue to Profile Setup
+          </button>
         </div>
       </div>
       {% endif %}
 
       <!-- Profile Setup Form (shown after role is selected) -->
-      <div class="card shadow" id="profileSetupCard" style="{% if not role %}display: none;{% endif %}">
-        <div class="card-header">
-          <h3 class="text-center mb-0">
-            <span id="profileHeaderText">
+      <div class="card" id="profileSetupCard" style="{% if not role %}display: none;{% endif %} border-radius: 20px; overflow: hidden;">
+        <!-- Header -->
+        <div style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%); padding: 40px; text-align: center; position: relative; overflow: hidden;">
+          <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 30% 70%, rgba(255,255,255,0.1) 0%, transparent 50%);"></div>
+          <div style="position: relative; z-index: 1;">
+            <div style="width: 70px; height: 70px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; backdrop-filter: blur(10px);">
+              <i class="fas fa-user-edit" style="font-size: 1.8rem; color: white;"></i>
+            </div>
+            <h3 style="color: white; margin-bottom: 8px;" id="profileHeaderText">
               {% if role == 'freelancer' %}
                 Complete Your Freelancer Profile
               {% elif role == 'client' %}
@@ -72,165 +117,152 @@
               {% else %}
                 Complete Your Profile
               {% endif %}
-            </span>
-          </h3>
-          <p class="text-center mb-0 mt-2">Just a few more details to get started!</p>
+            </h3>
+            <p style="color: rgba(255,255,255,0.8); margin: 0;">Just a few more details to get started!</p>
+          </div>
         </div>
-        <div class="card-body">
+        
+        <div class="card-body" style="padding: 40px;">
           <form method="POST" enctype="multipart/form-data" id="profileSetupForm">
             {% csrf_token %}
             
+            <!-- Freelancer Fields -->
             <div id="freelancerFields" style="{% if role != 'freelancer' %}display: none;{% endif %}">
-              <!-- Freelancer Fields -->
-              <div class="container">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label for="first_name_freelancer" class="form-label">First Name *</label>
-                      <input type="text" class="form-control" id="first_name_freelancer" name="first_name">
-                    </div>
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label"><i class="fas fa-user me-2"></i>First Name *</label>
+                  <input type="text" class="form-control form-control-lg" id="first_name_freelancer" name="first_name" placeholder="John">
+                </div>
+                <div class="col-md-6 mb-4">
+                  <label class="form-label"><i class="fas fa-user me-2"></i>Last Name *</label>
+                  <input type="text" class="form-control form-control-lg" id="last_name_freelancer" name="last_name" placeholder="Doe">
+                </div>
+              </div>
+              
+              <div class="mb-4">
+                <label class="form-label"><i class="fas fa-briefcase me-2"></i>Professional Title *</label>
+                <input type="text" class="form-control form-control-lg" id="title" name="title" placeholder="e.g., Full Stack Developer, UI/UX Designer">
+              </div>
+              
+              <div class="mb-4">
+                <label class="form-label"><i class="fas fa-align-left me-2"></i>Professional Bio *</label>
+                <textarea class="form-control" id="bio" name="bio" rows="4" placeholder="Tell clients about your experience, expertise, and what makes you unique..."></textarea>
+                <small class="form-text">This will be visible to potential clients</small>
+              </div>
+              
+              <div class="mb-4">
+                <label class="form-label"><i class="fas fa-tags me-2"></i>Skills *</label>
+                <input type="text" class="form-control form-control-lg" id="skills" name="skills" placeholder="e.g., JavaScript, Python, React, Node.js">
+                <small class="form-text">Separate multiple skills with commas</small>
+              </div>
+              
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label"><i class="fas fa-phone me-2"></i>Phone Number</label>
+                  <input type="tel" class="form-control form-control-lg" id="phone_number_freelancer" name="phone_number" placeholder="+1 234 567 8900">
+                  <small class="form-text">Optional: Clients can contact you directly</small>
+                </div>
+                <div class="col-md-6 mb-4">
+                  <label class="form-label"><i class="fas fa-dollar-sign me-2"></i>Hourly Rate (USD) *</label>
+                  <div class="input-group input-group-lg">
+                    <span class="input-group-text" style="background: var(--bg-secondary); border-color: var(--border-color); color: var(--text-muted);">$</span>
+                    <input type="number" class="form-control" id="hourly_rate" name="hourly_rate" min="1" step="0.01" placeholder="50.00">
                   </div>
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label for="last_name_freelancer" class="form-label">Last Name *</label>
-                      <input type="text" class="form-control" id="last_name_freelancer" name="last_name">
-                    </div>
-                  </div>
+                  <small class="form-text">You can always change this later</small>
                 </div>
-                
-                <div class="mb-3">
-                  <label for="title" class="form-label">Professional Title *</label>
-                  <input type="text" class="form-control" id="title" name="title" 
-                         placeholder="e.g., Web Developer, Graphic Designer">
-                </div>
-                
-                <div class="mb-3">
-                  <label for="bio" class="form-label">Professional Bio *</label>
-                  <textarea class="form-control" id="bio" name="bio" rows="4" 
-                            placeholder="Tell clients about your experience and expertise..."></textarea>
-                  <div class="form-text">This will be visible to potential clients</div>
-                </div>
-                
-                <div class="mb-3">
-                  <label for="skills" class="form-label">Skills *</label>
-                  <input type="text" class="form-control" id="skills" name="skills" 
-                         placeholder="e.g., JavaScript, Python, Adobe Photoshop">
-                  <div class="form-text">Separate multiple skills with commas</div>
-                </div>
-                
-                <div class="mb-3">
-                  <label for="phone_number_freelancer" class="form-label">Phone Number</label>
-                  <input type="tel" class="form-control" id="phone_number_freelancer" name="phone_number" 
-                         placeholder="e.g., +1-234-567-8900">
-                  <div class="form-text">Optional: Clients can contact you directly</div>
-                </div>
-                
-                <div class="mb-3">
-                  <label for="hourly_rate" class="form-label">Hourly Rate (USD) *</label>
-                  <div class="input-group">
-                    <span class="input-group-text">$</span>
-                    <input type="number" class="form-control" id="hourly_rate" name="hourly_rate" 
-                           min="1" step="0.01" placeholder="25.00">
-                  </div>
-                  <div class="form-text">You can always change this later</div>
-                </div>
-                
-                <div class="mb-3">
-                  <label for="profile_picture_freelancer" class="form-label">Profile Picture</label>
-                  <input type="file" class="form-control" id="profile_picture_freelancer" name="profile_picture" accept="image/*">
-                  <div class="form-text">Optional: A professional photo helps build trust</div>
-                </div>
+              </div>
+              
+              <div class="mb-4">
+                <label class="form-label"><i class="fas fa-camera me-2"></i>Profile Picture</label>
+                <input type="file" class="form-control form-control-lg" id="profile_picture_freelancer" name="profile_picture" accept="image/*">
+                <small class="form-text">Optional: A professional photo helps build trust with clients</small>
               </div>
             </div>
 
+            <!-- Client Fields -->
             <div id="clientFields" style="{% if role != 'client' %}display: none;{% endif %}">
-              <!-- Client Fields -->
-              <div class="container">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label for="first_name_client" class="form-label">First Name *</label>
-                      <input type="text" class="form-control" id="first_name_client" name="first_name">
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label for="last_name_client" class="form-label">Last Name *</label>
-                      <input type="text" class="form-control" id="last_name_client" name="last_name">
-                    </div>
-                  </div>
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label"><i class="fas fa-user me-2"></i>First Name *</label>
+                  <input type="text" class="form-control form-control-lg" id="first_name_client" name="first_name" placeholder="John">
                 </div>
-                
-                <div class="mb-3">
-                  <label for="company_name" class="form-label">Company Name</label>
-                  <input type="text" class="form-control" id="company_name" name="company_name" 
-                         placeholder="Your Company Name">
-                  <div class="form-text">Optional: Leave blank if you're hiring as an individual</div>
+                <div class="col-md-6 mb-4">
+                  <label class="form-label"><i class="fas fa-user me-2"></i>Last Name *</label>
+                  <input type="text" class="form-control form-control-lg" id="last_name_client" name="last_name" placeholder="Doe">
                 </div>
-                
-                <div class="mb-3">
-                  <label for="phone_number_client" class="form-label">Phone Number</label>
-                  <input type="tel" class="form-control" id="phone_number_client" name="phone_number" 
-                         placeholder="e.g., +1-234-567-8900">
-                  <div class="form-text">Optional: Freelancers can contact you directly</div>
-                </div>
-                
-                <div class="mb-3">
-                  <label for="profile_picture_client" class="form-label">Profile Picture</label>
-                  <input type="file" class="form-control" id="profile_picture_client" name="profile_picture" accept="image/*">
-                  <div class="form-text">Optional: A professional photo helps build trust</div>
-                </div>
+              </div>
+              
+              <div class="mb-4">
+                <label class="form-label"><i class="fas fa-building me-2"></i>Company Name</label>
+                <input type="text" class="form-control form-control-lg" id="company_name" name="company_name" placeholder="Your Company Name">
+                <small class="form-text">Optional: Leave blank if you're hiring as an individual</small>
+              </div>
+              
+              <div class="mb-4">
+                <label class="form-label"><i class="fas fa-phone me-2"></i>Phone Number</label>
+                <input type="tel" class="form-control form-control-lg" id="phone_number_client" name="phone_number" placeholder="+1 234 567 8900">
+                <small class="form-text">Optional: Freelancers can contact you directly</small>
+              </div>
+              
+              <div class="mb-4">
+                <label class="form-label"><i class="fas fa-camera me-2"></i>Profile Picture</label>
+                <input type="file" class="form-control form-control-lg" id="profile_picture_client" name="profile_picture" accept="image/*">
+                <small class="form-text">Optional: A professional photo helps build trust with freelancers</small>
               </div>
             </div>
             
-            <div class="d-grid">
-              <button type="submit" class="btn btn-success btn-lg">
-                <i class="fas fa-check-circle"></i> Complete Setup & Go to Dashboard
+            <div style="border-top: 1px solid var(--border-color); padding-top: 30px; margin-top: 20px;">
+              <button type="submit" class="btn btn-success btn-lg w-100" style="padding: 16px;">
+                <i class="fas fa-check-circle me-2"></i> Complete Setup & Go to Dashboard
               </button>
+              <p class="text-center mt-3" style="color: var(--text-muted);">
+                <small><i class="fas fa-lock me-1"></i> Your information is secure and will only be shared with relevant parties</small>
+              </p>
             </div>
           </form>
-          
-          <div class="text-center mt-3">
-            <small class="text-muted">* Required fields</small>
-          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
+<style>
+  .role-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3) !important;
+  }
+  
+  .role-card.selected {
+    border-color: #6366f1 !important;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2), 0 20px 40px rgba(0,0,0,0.3) !important;
+  }
+  
+  .role-card.selected .select-indicator {
+    opacity: 1 !important;
+  }
+  
+  .role-card.client-selected {
+    border-color: #10b981 !important;
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2), 0 20px 40px rgba(0,0,0,0.3) !important;
+  }
+</style>
+
 <script>
 let selectedRoleValue = '{{ role|default:"" }}';
 
 function selectRole(role, el) {
     document.querySelectorAll('.role-card').forEach(card => {
-        card.classList.remove('selected');
+        card.classList.remove('selected', 'client-selected');
     });
     
-    el.classList.add('selected');
+    if (role === 'client') {
+        el.classList.add('client-selected');
+    } else {
+        el.classList.add('selected');
+    }
+    
     selectedRoleValue = role;
     document.getElementById('continueRoleBtn').disabled = false;
-    
-    const ripple = document.createElement('div');
-    ripple.style.cssText = `
-        position: absolute;
-        border-radius: 50%;
-        background: rgba(0, 123, 255, 0.3);
-        transform: scale(0);
-        animation: ripple 0.6s linear;
-        pointer-events: none;
-    `;
-    
-    const rect = el.getBoundingClientRect();
-    const size = Math.max(rect.width, rect.height);
-    ripple.style.width = ripple.style.height = size + 'px';
-    ripple.style.left = (rect.width - size) / 2 + 'px';
-    ripple.style.top = (rect.height - size) / 2 + 'px';
-    
-    el.style.position = 'relative';
-    el.appendChild(ripple);
-    
-    setTimeout(() => ripple.remove(), 600);
 }
 
 async function submitRoleSelection() {
@@ -258,22 +290,18 @@ async function submitRoleSelection() {
         const data = await response.json();
 
         if (data.success) {
-            // Hide role selection, show profile form
             document.getElementById('roleSelectionCard').style.display = 'none';
             document.getElementById('profileSetupCard').style.display = 'block';
             
-            // Update header text
             const headerText = selectedRoleValue === 'freelancer' 
                 ? 'Complete Your Freelancer Profile' 
                 : 'Complete Your Client Profile';
             document.getElementById('profileHeaderText').textContent = headerText;
             
-            // Show appropriate fields
             if (selectedRoleValue === 'freelancer') {
                 document.getElementById('freelancerFields').style.display = 'block';
                 document.getElementById('clientFields').style.display = 'none';
                 
-                // Set required attributes for freelancer fields
                 document.getElementById('first_name_freelancer').required = true;
                 document.getElementById('last_name_freelancer').required = true;
                 document.getElementById('title').required = true;
@@ -284,12 +312,10 @@ async function submitRoleSelection() {
                 document.getElementById('clientFields').style.display = 'block';
                 document.getElementById('freelancerFields').style.display = 'none';
                 
-                // Set required attributes for client fields
                 document.getElementById('first_name_client').required = true;
                 document.getElementById('last_name_client').required = true;
             }
             
-            // Scroll to form
             document.getElementById('profileSetupCard').scrollIntoView({ behavior: 'smooth' });
             
             if (window.toast) {
@@ -300,7 +326,7 @@ async function submitRoleSelection() {
                 window.toast.error('Error', data.message || 'Failed to save role selection.');
             }
             continueBtn.disabled = false;
-            continueBtn.innerHTML = '<i class="fas fa-arrow-right"></i> Continue';
+            continueBtn.innerHTML = '<i class="fas fa-arrow-right"></i> Continue to Profile Setup';
         }
     } catch (error) {
         console.error('Error:', error);
@@ -308,7 +334,7 @@ async function submitRoleSelection() {
             window.toast.error('Network Error', 'Please check your connection and try again.');
         }
         continueBtn.disabled = false;
-        continueBtn.innerHTML = '<i class="fas fa-arrow-right"></i> Continue';
+        continueBtn.innerHTML = '<i class="fas fa-arrow-right"></i> Continue to Profile Setup';
     }
 }
 </script>

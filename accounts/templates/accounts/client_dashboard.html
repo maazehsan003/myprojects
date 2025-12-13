@@ -1,212 +1,246 @@
 {% extends "accounts/layout1.html" %}
 {% block body %}
 
-<div class="container mt-4">
+<div class="container">
+  <!-- Welcome Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+        <div>
+          <h2 style="margin-bottom: 4px;">
+            <span style="background: linear-gradient(135deg, #10b981, #059669); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+              Welcome back, {{ client_profile.first_name }}!
+            </span>
+          </h2>
+          <p style="color: var(--text-muted); margin: 0;">Manage your projects and find top talent</p>
+        </div>
+        <a href="{% url 'post_job' %}" class="btn btn-success">
+          <i class="fas fa-plus-circle"></i> Post a New Job
+        </a>
+      </div>
+    </div>
+  </div>
+
   <div class="row">
-    <div class="col-md-8">
-      <h2>Welcome back, {{ client_profile.first_name }}!</h2>
+    <!-- Main Content -->
+    <div class="col-lg-8">
       
-      <!-- Wallet Section for Clients -->
-      <div class="card mb-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
-        <div class="card-body">
+      <!-- Wallet Card -->
+      <div class="card mb-4" style="background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%); border: none; border-radius: 20px; position: relative; overflow: hidden;">
+        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 20% 80%, rgba(255,255,255,0.15) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);"></div>
+        <div class="card-body" style="position: relative; z-index: 1; padding: 28px;">
           <div class="row align-items-center">
             <div class="col-md-8">
-              <h5><i class="fas fa-wallet"></i> My Wallet</h5>
-              <div style="font-size: 2em; font-weight: bold;">${{ wallet.balance }}</div>
-              <small>Available Balance</small>
+              <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                <i class="fas fa-wallet" style="font-size: 1.5rem;"></i>
+                <h5 style="margin: 0; color: white; font-weight: 600;">My Wallet</h5>
+              </div>
+              <div style="font-size: 3rem; font-weight: 800; color: white; letter-spacing: -2px;">${{ wallet.balance }}</div>
+              <small style="color: rgba(255,255,255,0.7);">Available Balance</small>
               
               {% if pending_payments > 0 %}
-                <div class="mt-2 p-2" style="background: rgba(255,255,255,0.1); border-radius: 5px;">
-                  <strong><i class="fas fa-clock"></i> Payments On Hold: ${{ pending_payments }}</strong>
-                  <br><small>Payments held for ongoing projects</small>
+                <div style="margin-top: 16px; padding: 14px; background: rgba(255,255,255,0.12); border-radius: 12px; backdrop-filter: blur(10px);">
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-hourglass-half" style="color: #fbbf24;"></i>
+                    <div>
+                      <strong style="color: white;">On Hold: ${{ pending_payments }}</strong>
+                      <br><small style="color: rgba(255,255,255,0.7);">Payments held for ongoing projects</small>
+                    </div>
+                  </div>
                 </div>
               {% endif %}
               
-              <div class="row mt-3 small">
+              <div class="row mt-4" style="font-size: 0.9rem;">
                 <div class="col-6">
-                  <strong>Total Spent:</strong> ${{ total_spent }}
+                  <div style="color: rgba(255,255,255,0.7);">Total Spent</div>
+                  <div style="color: white; font-weight: 700; font-size: 1.25rem;">${{ total_spent }}</div>
                 </div>
                 <div class="col-6">
-                  <strong>Projects Completed:</strong> {{ completed_jobs_count }}
+                  <div style="color: rgba(255,255,255,0.7);">Projects Completed</div>
+                  <div style="color: white; font-weight: 700; font-size: 1.25rem;">{{ completed_jobs_count }}</div>
                 </div>
               </div>
               
               {% if wallet.balance < 100 %}
-                <div class="mt-2 p-2" style="background: rgba(255,193,7,0.3); border-radius: 4px; font-size: 0.85em;">
-                  <i class="fas fa-exclamation-triangle"></i> Low balance - Consider topping up your wallet to accept more applications
+                <div style="margin-top: 16px; padding: 12px; background: rgba(251, 191, 36, 0.2); border-radius: 10px; border: 1px solid rgba(251, 191, 36, 0.3);">
+                  <i class="fas fa-exclamation-triangle" style="color: #fbbf24;"></i>
+                  <span style="color: white; font-size: 0.85rem; margin-left: 8px;">Low balance - Top up to accept more applications</span>
                 </div>
               {% endif %}
             </div>
-            <div class="col-md-4 text-center">
-              <a href="{% url 'payments:wallet' %}" class="btn btn-light btn-lg mb-2">
-                <i class="fas fa-cog"></i> Manage Wallet
+            <div class="col-md-4 text-center mt-4 mt-md-0">
+              <a href="{% url 'payments:wallet' %}" class="btn btn-light btn-lg mb-2 d-block">
+                <i class="fas fa-plus"></i> Add Funds
               </a>
-              <br>
-              <a href="{% url 'payments:payment_history' %}" class="btn btn-outline-light">
-                <i class="fas fa-history"></i> Payment History
+              <a href="{% url 'payments:payment_history' %}" class="btn btn-outline-light d-block">
+                <i class="fas fa-history"></i> History
               </a>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-header">
-          <h4><i class="fas fa-user-tie"></i> Your Client Profile</h4>
+      <!-- Profile Card -->
+      <div class="card mb-4">
+        <div class="card-header" style="display: flex; align-items: center; justify-content: space-between;">
+          <h5 style="margin: 0;"><i class="fas fa-building"></i> Client Profile</h5>
+          <a href="{% url 'edit_profile' %}" class="btn btn-outline-primary btn-sm">
+            <i class="fas fa-pen"></i> Edit
+          </a>
         </div>
         <div class="card-body">
           <div class="row">
             <div class="col-md-8">
-              <div class="mb-3">
-                <strong><i class="fas fa-user"></i> Name:</strong> 
-                {{ client_profile.first_name }} {{ client_profile.last_name }}
-              </div>
-              {% if client_profile.company_name %}
-                <div class="mb-3">
-                  <strong><i class="fas fa-building"></i> Company:</strong> 
-                  {{ client_profile.company_name }}
+              <div style="margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                  <i class="fas fa-user" style="color: var(--text-muted); width: 20px;"></i>
+                  <strong>{{ client_profile.first_name }} {{ client_profile.last_name }}</strong>
                 </div>
-              {% endif %}
-              {% if client_profile.phone_number %}
-                <div class="mb-3">
-                  <strong><i class="fas fa-phone"></i> Phone:</strong> 
-                  {{ client_profile.phone_number }}
+                {% if client_profile.company_name %}
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                  <i class="fas fa-building" style="color: var(--text-muted); width: 20px;"></i>
+                  <span style="color: var(--text-secondary);">{{ client_profile.company_name }}</span>
                 </div>
-              {% endif %}
-              <div class="mb-3">
-                <strong><i class="fas fa-envelope"></i> Email:</strong> 
-                {{ user.email }}
-              </div>
-              <div class="mb-3">
-                <strong><i class="fas fa-calendar"></i> Member since:</strong> 
-                {{ user.date_joined|date:"M Y" }}
+                {% endif %}
+                {% if client_profile.phone_number %}
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                  <i class="fas fa-phone" style="color: var(--text-muted); width: 20px;"></i>
+                  <span style="color: var(--text-secondary);">{{ client_profile.phone_number }}</span>
+                </div>
+                {% endif %}
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                  <i class="fas fa-envelope" style="color: var(--text-muted); width: 20px;"></i>
+                  <span style="color: var(--text-secondary);">{{ user.email }}</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <i class="fas fa-calendar" style="color: var(--text-muted); width: 20px;"></i>
+                  <span style="color: var(--text-secondary);">Member since {{ user.date_joined|date:"M Y" }}</span>
+                </div>
               </div>
             </div>
             <div class="col-md-4 text-center">
               {% if client_profile.profile_picture and client_profile.profile_picture.name %}
                 <img src="{{ client_profile.profile_picture.url }}" alt="Profile" 
-                     class="img-thumbnail rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                     class="img-thumbnail mb-3" style="width: 140px; height: 140px; object-fit: cover;">
               {% else %}
-                <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center mb-3" 
-                     style="width: 150px; height: 150px; margin: 0 auto;">
-                  <i class="fas fa-user fa-3x text-white"></i>
+                <div style="width: 140px; height: 140px; background: linear-gradient(135deg, var(--bg-elevated), var(--bg-hover)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; border: 3px solid var(--border-color);">
+                  <i class="fas fa-user" style="font-size: 3.5rem; color: var(--text-muted);"></i>
                 </div>
               {% endif %}
-              <div class="text-muted">
-                <small>Client Profile</small>
-              </div>
+              <span class="badge bg-success" style="padding: 8px 16px;">Client Account</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Quick Stats -->
-      <div class="row mt-4">
-        <div class="col-md-4">
-          <div class="card bg-primary text-white">
-            <div class="card-body text-center">
-              <i class="fas fa-briefcase fa-2x mb-2"></i>
-              <h5>Jobs Posted</h5>
-              <h3>{{ posted_jobs_count|default:0 }}</h3>
+      <!-- Stats Cards -->
+      <div class="row mb-4">
+        <div class="col-md-4 mb-3">
+          <div class="card bg-primary text-white" style="border-radius: 16px;">
+            <div class="card-body text-center" style="padding: 24px;">
+              <i class="fas fa-briefcase" style="font-size: 2rem; margin-bottom: 12px; opacity: 0.9;"></i>
+              <h5 style="margin-bottom: 4px; opacity: 0.9; font-size: 0.9rem;">Jobs Posted</h5>
+              <h3 style="margin: 0; font-weight: 700;">{{ posted_jobs_count|default:0 }}</h3>
             </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="card bg-success text-white">
-            <div class="card-body text-center">
-              <i class="fas fa-check-circle fa-2x mb-2"></i>
-              <h5>Completed</h5>
-              <h3>{{ completed_jobs_count|default:0 }}</h3>
+        <div class="col-md-4 mb-3">
+          <div class="card bg-success text-white" style="border-radius: 16px;">
+            <div class="card-body text-center" style="padding: 24px;">
+              <i class="fas fa-check-circle" style="font-size: 2rem; margin-bottom: 12px; opacity: 0.9;"></i>
+              <h5 style="margin-bottom: 4px; opacity: 0.9; font-size: 0.9rem;">Completed</h5>
+              <h3 style="margin: 0; font-weight: 700;">{{ completed_jobs_count|default:0 }}</h3>
             </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="card bg-info text-white">
-            <div class="card-body text-center">
-              <i class="fas fa-file-alt fa-2x mb-2"></i>
-              <h5>Applications</h5>
-              <h3>{{ total_applications|default:0 }}</h3>
+        <div class="col-md-4 mb-3">
+          <div class="card bg-info text-white" style="border-radius: 16px;">
+            <div class="card-body text-center" style="padding: 24px;">
+              <i class="fas fa-file-alt" style="font-size: 2rem; margin-bottom: 12px; opacity: 0.9;"></i>
+              <h5 style="margin-bottom: 4px; opacity: 0.9; font-size: 0.9rem;">Applications</h5>
+              <h3 style="margin: 0; font-weight: 700;">{{ total_applications|default:0 }}</h3>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Low Balance Alert for Clients -->
       {% if wallet.balance < 50 %}
-      <div class="alert alert-danger mt-4">
-        <i class="fas fa-exclamation-triangle"></i>
-        <strong>Low Wallet Balance!</strong><br>
-        Your current balance (${{ wallet.balance }}) may not be sufficient to accept new applications. 
-        <a href="{% url 'payments:wallet' %}" class="alert-link">Top up your wallet</a> to continue hiring.
+      <div class="alert alert-danger" style="display: flex; align-items: center; gap: 16px;">
+        <i class="fas fa-exclamation-triangle" style="font-size: 1.5rem;"></i>
+        <div>
+          <strong>Low Wallet Balance!</strong><br>
+          <span>Your balance (${{ wallet.balance }}) may not be enough to accept applications. <a href="{% url 'payments:wallet' %}" class="alert-link">Top up now</a>.</span>
+        </div>
       </div>
       {% endif %}
     </div>
     
-    <div class="col-md-4">
-      <div class="card">
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+      <!-- Quick Actions -->
+      <div class="card mb-4">
         <div class="card-header">
-          <h5><i class="fas fa-rocket"></i> Quick Actions</h5>
+          <h6 style="margin: 0;"><i class="fas fa-bolt"></i> Quick Actions</h6>
         </div>
-        <div class="card-body">
+        <div class="card-body quick-actions" style="padding: 16px;">
           <a href="{% url 'payments:wallet' %}" class="btn btn-outline-primary mb-2 d-block">
             <i class="fas fa-wallet"></i> Manage Wallet
           </a>
           <a href="{% url 'edit_profile' %}" class="btn btn-outline-secondary mb-2 d-block">
-            <i class="fas fa-user-edit"></i> Edit Profile
+            <i class="fas fa-user-cog"></i> Edit Profile
           </a>
           <a href="{% url 'post_job' %}" class="btn btn-success mb-2 d-block">
             <i class="fas fa-plus-circle"></i> Post a Job
           </a>
           <a href="{% url 'my_jobs' %}" class="btn btn-info mb-2 d-block">
-            <i class="fas fa-tasks"></i> My Jobs
+            <i class="fas fa-briefcase"></i> My Jobs
           </a>
           <a href="{% url 'applications' %}" class="btn btn-warning mb-2 d-block">
             <i class="fas fa-file-alt"></i> View Applications
           </a>
-            <a href="{% url 'reviews:my_reviews' %}" class="btn btn-outline-info mb-2 d-block">
+          <a href="{% url 'reviews:my_reviews' %}" class="btn btn-outline-info mb-2 d-block">
             <i class="fas fa-star"></i> My Reviews
           </a>
-          <a href="{% url 'payments:payment_history' %}" class="btn btn-outline-dark mb-2 d-block">
+          <a href="{% url 'payments:payment_history' %}" class="btn btn-outline-dark d-block">
             <i class="fas fa-history"></i> Payment History
           </a>
         </div>
       </div>
 
-      <!-- Recent Activity -->
-      <div class="card mt-4">
+      <!-- Recent Jobs -->
+      <div class="card">
         <div class="card-header">
-          <h6><i class="fas fa-clock"></i> Recent Activity</h6>
+          <h6 style="margin: 0;"><i class="fas fa-clock"></i> Recent Jobs</h6>
         </div>
-        <div class="card-body">
+        <div class="card-body" style="padding: 16px;">
           {% if user.posted_jobs.all %}
-            {% for job in user.posted_jobs.all|slice:":3" %}
-              <div class="d-flex align-items-center mb-2">
-                <div class="me-3">
+            {% for job in user.posted_jobs.all|slice:":5" %}
+              <div class="activity-item" style="display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 10px; margin-bottom: 8px; background: var(--bg-secondary);">
+                <div>
                   {% if job.status == 'open' %}
-                    <i class="fas fa-circle text-primary"></i>
+                    <i class="fas fa-circle" style="color: #6366f1; font-size: 0.6rem;"></i>
                   {% elif job.status == 'in_progress' %}
-                    <i class="fas fa-circle text-warning"></i>
+                    <i class="fas fa-circle" style="color: #f59e0b; font-size: 0.6rem;"></i>
                   {% elif job.status == 'completed' %}
-                    <i class="fas fa-circle text-success"></i>
+                    <i class="fas fa-circle" style="color: #10b981; font-size: 0.6rem;"></i>
                   {% else %}
-                    <i class="fas fa-circle text-secondary"></i>
+                    <i class="fas fa-circle" style="color: var(--text-muted); font-size: 0.6rem;"></i>
                   {% endif %}
                 </div>
-                <div class="flex-grow-1">
-                  <small class="fw-bold">{{ job.title|truncatechars:25 }}</small>
-                  <br>
-                  <small class="text-muted">{{ job.created_at|date:"M d" }} - {{ job.get_status_display }}</small>
+                <div style="flex: 1; min-width: 0;">
+                  <div style="font-weight: 600; color: var(--text-primary); font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ job.title|truncatechars:22 }}</div>
+                  <small style="color: var(--text-muted);">{{ job.created_at|date:"M d" }} • {{ job.get_status_display }}</small>
                 </div>
               </div>
             {% endfor %}
             <div class="text-center mt-3">
-              <a href="{% url 'my_jobs' %}" class="btn btn-sm btn-outline-primary">View All</a>
+              <a href="{% url 'my_jobs' %}" class="btn btn-outline-primary btn-sm">View All Jobs</a>
             </div>
           {% else %}
-            <div class="text-center text-muted py-3">
-              <i class="fas fa-info-circle"></i>
-              <p class="mb-0">No jobs posted yet</p>
-              <small>Start by posting your first job!</small>
+            <div style="text-align: center; padding: 32px 16px; color: var(--text-muted);">
+              <i class="fas fa-inbox" style="font-size: 2.5rem; margin-bottom: 12px; opacity: 0.5;"></i>
+              <p style="margin-bottom: 8px;">No jobs posted yet</p>
+              <a href="{% url 'post_job' %}" class="btn btn-success btn-sm">Post Your First Job</a>
             </div>
           {% endif %}
         </div>

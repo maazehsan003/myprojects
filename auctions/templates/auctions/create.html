@@ -1,8 +1,11 @@
 {% extends "auctions/layout.html" %}
-{% block body %}
 
+{% block title %}Create Listing - AuctionHub{% endblock %}
+
+{% block body %}
 <div data-aos="fade-up">
     <h2 class="page-title">Create New Listing</h2>
+    <p class="page-subtitle">List your item and start receiving bids from buyers</p>
 </div>
 
 <div class="form-container" data-aos="fade-up" data-aos-delay="100">
@@ -10,39 +13,62 @@
         {% csrf_token %}
         
         <div class="form-group">
-            <label for="title">Title *</label>
-            <input type="text" name="title" id="title" class="form-control" placeholder="e.g., Vintage Camera" required>
+            <label for="title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem; vertical-align: middle;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                Title *
+            </label>
+            <input type="text" name="title" id="title" class="form-control" placeholder="e.g., Vintage Rolex Watch" required>
         </div>
 
         <div class="form-group">
-            <label for="description">Description *</label>
-            <textarea name="description" id="description" class="form-control" rows="5" placeholder="Describe your item in detail..." required></textarea>
+            <label for="description">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem; vertical-align: middle;"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg>
+                Description *
+            </label>
+            <textarea name="description" id="description" class="form-control" rows="5" placeholder="Describe your item in detail. Include condition, features, and any relevant information..." required></textarea>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="bid">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem; vertical-align: middle;"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        Starting Bid ($) *
+                    </label>
+                    <input type="number" name="bid" id="bid" step="0.01" min="0.01" class="form-control" placeholder="0.00" required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="category">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem; vertical-align: middle;"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        Category *
+                    </label>
+                    <input type="text" name="category" id="category" class="form-control" placeholder="e.g., Electronics, Fashion" required>
+                </div>
+            </div>
         </div>
 
         <div class="form-group">
-            <label for="bid">Starting Bid ($) *</label>
-            <input type="number" name="bid" id="bid" step="0.01" min="0.01" class="form-control" placeholder="0.00" required>
-        </div>
-
-        <div class="form-group">
-            <label for="image">Image URL</label>
+            <label for="image">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem; vertical-align: middle;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                Image URL
+            </label>
             <input type="url" name="image" id="image" class="form-control" placeholder="https://example.com/image.jpg">
-            <small style="color: var(--gray-500); display: block; margin-top: 0.5rem;">
-                Optional: Provide a direct link to an image
-            </small>
+            <p class="form-help">Provide a direct link to an image of your item. Leave blank to use a placeholder.</p>
         </div>
 
-        <div class="form-group">
-            <label for="category">Category *</label>
-            <input type="text" name="category" id="category" class="form-control" placeholder="e.g., Electronics, Fashion, Collectibles" required>
+        <div style="background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.5rem;">
+            <p style="font-size: 0.875rem; color: var(--gray-600); margin: 0;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem; vertical-align: middle;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                By creating a listing, you agree to our terms of service. Ensure your item description is accurate and honest.
+            </p>
         </div>
 
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary" style="width: 100%;">
-                Create Listing
-            </button>
-        </div>
+        <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Publish Listing
+        </button>
     </form>
 </div>
-
 {% endblock %}
